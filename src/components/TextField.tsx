@@ -1,11 +1,25 @@
 import React from 'react'
 import { Input } from 'react-daisyui'
+import { RefCallBack } from 'react-hook-form'
+
 
 interface TextFieldProps {
     id: string
     label: string
     error?: string
-    inputProps?: unknown
+    inputProps?: {
+        onChange?: (ev: any) => unknown;
+        onBlur?: (ev: any) => unknown;
+        ref?: RefCallBack;
+        name?: string;
+        min?: string | number;
+        max?: string | number;
+        maxLength?: number;
+        minLength?: number;
+        pattern?: string;
+        required?: boolean;
+        disabled?: boolean;
+    }
     type?: 'password' | 'text' | 'phone-number'
 }
 
