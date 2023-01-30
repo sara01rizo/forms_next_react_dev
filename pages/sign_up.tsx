@@ -37,7 +37,7 @@ export default function SignUpPage () {
                     { ... register("email", { required: "Please type your email here" })}
                 />
                 {
-                    errors.email?.message ? (<span className="label-text text-error">An error message</span>) : null
+                    errors.email?.message ? (<span className="label-text text-error">{errors.email?.message as string}</span>) : null
                 }
             </div>
             <button>Submit</button>
