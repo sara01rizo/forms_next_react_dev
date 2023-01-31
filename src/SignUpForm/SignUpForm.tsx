@@ -1,8 +1,10 @@
-import React from "react";
+import React, { forwardRef, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { TextField } from "../components/TextField";
 import * as z from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
+import { useEffect } from "react";
+import { useImperativeHandle } from "react";
 
 const SignupSchema = z.object({
     email: z.string().email(),
@@ -25,12 +27,32 @@ interface SignUpFormProps {
     onSubmitReady: (data: SignupFormValues) => void
 }
 
-export const SignUpForm = (props: SignUpFormProps ) => {
+interface SignUpApi {
+    setErrors: (errors: Record<string, string>) => void
+}
 
-    const { register, handleSubmit, formState: { errors } } = useForm<SignupFormValue>({
+export const SignUpForm = forwardRef<SignUpApi, SignUpFormProps>((props, ref) => {
+
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<SignupFormValues>({
         resolver: zodResolver(SignupSchema),
     });
-   
+
+    // useEffect(() => {
+    //     setError('email', { type: 'custom', message: 'Type your email' });
+    // }, [])
+    const setErrorRef = useRef(setError)
+    setErrorRef.current = setError
+    useImperativeHandle(ref, () => {
+        return {
+          setErrors: (errors: Record<string, string>) => {
+            console.log('setError', errors)
+            Object.entries(errors).forEach(([key, value]) => {
+                setErrorRef.current(key as "email" | "password" | "confirmPassword", {message: value})
+            })
+          }
+        };
+      }, []);
+      
     return (
         <form
             style={{
@@ -70,4 +92,6 @@ export const SignUpForm = (props: SignUpFormProps ) => {
             <button>Submit</button>
         </form>
     )
-}
+})
+
+SignUpForm.displayName = 'ForwardRefSignUpForm'

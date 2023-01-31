@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,6 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 "email": "email not available"
             }
         })
+        return
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000))
