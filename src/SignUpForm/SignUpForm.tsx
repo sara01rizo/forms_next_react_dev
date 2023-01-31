@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { TextField } from "../components/TextField";
 import * as z from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
-import { useEffect } from "react";
 import { useImperativeHandle } from "react";
 
 const SignupSchema = z.object({
@@ -27,7 +26,7 @@ interface SignUpFormProps {
     onSubmitReady: (data: SignupFormValues) => void
 }
 
-interface SignUpApi {
+export interface SignUpApi {
     setErrors: (errors: Record<string, string>) => void
 }
 
