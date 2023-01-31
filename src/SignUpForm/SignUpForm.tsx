@@ -4,6 +4,7 @@ import { TextField } from "../components/TextField";
 import * as z from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import { useImperativeHandle } from "react";
+import { Button } from "react-daisyui";
 
 const SignupSchema = z.object({
     email: z.string().email(),
@@ -23,7 +24,7 @@ const SignupSchema = z.object({
 export type SignupFormValues = z.infer<typeof SignupSchema>
 
 interface SignUpFormProps {
-    onSubmitReady: (data: SignupFormValues) => void
+    onSubmitReady: (data: SignupFormValues) => Promise<void>
 }
 
 export interface SignUpApi {
@@ -32,7 +33,7 @@ export interface SignUpApi {
 
 export const SignUpForm = forwardRef<SignUpApi, SignUpFormProps>((props, ref) => {
 
-    const { register, handleSubmit, setError, formState: { errors } } = useForm<SignupFormValues>({
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<SignupFormValues>({
         resolver: zodResolver(SignupSchema),
     });
 
@@ -60,21 +61,22 @@ export const SignUpForm = forwardRef<SignUpApi, SignUpFormProps>((props, ref) =>
                 gap: 15,
                 alignItems: "center",
                 justifyContent: "center",
-                height: "100vh"
+                height: "100vh",
+                backgroundColor: "#FAF0DC",
             }}
             onSubmit={handleSubmit(props.onSubmitReady)}
         >         
             <h2>Sign Up 🧭</h2>
             <TextField 
                 id='email'
-                label='email'
+                label='Email'
                 inputProps={register("email")}
                 error={errors.email?.message as string}
             />
 
             <TextField 
                 id='password'
-                label='password'
+                label='Password'
                 type='password'
                 inputProps={register("password")}
                 error={errors.password?.message as string}
@@ -82,15 +84,19 @@ export const SignUpForm = forwardRef<SignUpApi, SignUpFormProps>((props, ref) =>
 
             <TextField 
                 id='confirm-password'
-                label='confirm-password'
+                label='Confirm Password'
                 type='password'
                 inputProps={register("confirmPassword")}
                 error={errors.confirmPassword?.message as string}
             />
 
-            <button>Submit</button>
+            <Button disabled={isSubmitting} color="secondary">
+                {isSubmitting ? "Sending ..." : "Register"}
+            </Button>
         </form>
     )
 })
 
 SignUpForm.displayName = 'ForwardRefSignUpForm'
+
+//<button>{isSubmitting ? "Hold up" : "Submit"}</button>
