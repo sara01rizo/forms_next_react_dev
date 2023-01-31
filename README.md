@@ -1,3 +1,22 @@
+![final_form](https://github.com/sara01rizo/forms_next_react_dev/blob/master/public/images/sign_up_form_custome.png?raw=true)
+
+## About forms
+-react 18.2.0
+-react-hook-form
+-typescript 4.9.4
+-hookform/resolvers
+-next 13.1.5
+-next/font
+-types/react
+-types/node
+-types/react-dom
+-zeit/next-css
+-react-daisyui ^3.0.2
+-tailwindcss ^3.2.4
+-postcss ^8.4.21
+-zod ^3.20.2
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
