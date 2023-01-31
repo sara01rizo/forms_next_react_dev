@@ -19,13 +19,15 @@ const SignupSchema = z.object({
     }
 )
 
+type SignupFormValue = z.infer<typeof SignupSchema>
+
 interface SignUpFormProps {
     onSubmitReady: (data: unknown) => void
 }
 
 export const SignUpForm = (props: SignUpFormProps ) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm<SignupFormValue>({
         resolver: zodResolver(SignupSchema),
     });
    
