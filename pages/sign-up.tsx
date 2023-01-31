@@ -1,12 +1,22 @@
 import React from "react";
 import { useCallback } from "react";
-import { Input } from "react-daisyui";
 import { useForm } from "react-hook-form";
 import { TextField } from "../src/components/TextField";
+import * as z from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
 
-export default function SignUpPage () {
+const SignupSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6).max(24),
+    confirmPassword: z.string().min(6).max(24),
+    strip: z.any(),
+})
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+export default function SignUpPage (): JSX.Element {
+
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({
+        resolver: zodResolver(SignupSchema),
+    });
     const onValid = useCallback((data: unknown) => {
         console.log(`onValid`, data)
     }, [])
@@ -29,7 +39,7 @@ export default function SignUpPage () {
             <TextField 
                 id='email'
                 label='email'
-                inputProps={register("email", {required: "Please type your email" })}
+                inputProps={register("email")}
                 error={errors.email?.message as string}
             />
 
@@ -37,7 +47,7 @@ export default function SignUpPage () {
                 id='password'
                 label='password'
                 type='password'
-                inputProps={register("password", {required: "Please type your password" })}
+                inputProps={register("password")}
                 error={errors.password?.message as string}
             />
 
@@ -45,7 +55,7 @@ export default function SignUpPage () {
                 id='confirm-password'
                 label='confirm-password'
                 type='password'
-                inputProps={register("confirmPassword", {required: "Please tyoe your email" })}
+                inputProps={register("confirmPassword")}
                 error={errors.confirmPassword?.message as string}
             />
 
