@@ -1,65 +1,35 @@
-import React from "react";
-import { useCallback } from "react";
-import { useForm } from "react-hook-form";
-import { TextField } from "../src/components/TextField";
-import * as z from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod';
+import React, { useRef } from "react";
+import { SignUpForm, SignupFormValues } from "../src/SignUpForm/SignUpForm";
 
-const SignupSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6).max(24),
-    confirmPassword: z.string().min(6).max(24),
-    strip: z.any(),
-})
+export default function SignUpPage () {
 
-export default function SignUpPage (): JSX.Element {
+    const signupFormRef = useRef(null)
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({
-        resolver: zodResolver(SignupSchema),
-    });
-    const onValid = useCallback((data: unknown) => {
-        console.log(`onValid`, data)
-    }, [])
+    const handleSubmit = async (data: SignupFormValues) => {
+        console.log("handle submit ready data", data)
+        const httpResponse = await fetch('/api/sign-up',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: data.email,
+                password: data.password
+            })
+        })
+        const jsonResponse = await httpResponse.json()
+        if ( !jsonResponse.success ) {
+            console.log("time to set an error in the form", jsonResponse.errors)
+            //how to change SignUpForm
+            signupFormRef.current.setErrors(jsonResponse.errors)
+        }
+        console.log(jsonResponse)
+    }
 
-    console.log('Render sign-up runing function', errors)
-    
     return (
-        <form
-            style={{
-                display: "flex",
-                flexFlow: "column",
-                gap: 15,
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh"
-            }}
-            onSubmit={handleSubmit(onValid)}
-        >         
-
-            <TextField 
-                id='email'
-                label='email'
-                inputProps={register("email")}
-                error={errors.email?.message as string}
-            />
-
-            <TextField 
-                id='password'
-                label='password'
-                type='password'
-                inputProps={register("password")}
-                error={errors.password?.message as string}
-            />
-
-            <TextField 
-                id='confirm-password'
-                label='confirm-password'
-                type='password'
-                inputProps={register("confirmPassword")}
-                error={errors.confirmPassword?.message as string}
-            />
-
-            <button>Submit</button>
-        </form>
+        <SignUpForm
+            ref={signupFormRef} 
+            onSubmitReady={handleSubmit}
+        />
     )
 }
