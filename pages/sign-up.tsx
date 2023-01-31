@@ -10,9 +10,17 @@ const SignupSchema = z.object({
     password: z.string().min(6).max(24),
     confirmPassword: z.string().min(6).max(24),
     strip: z.any(),
-})
+}). refine(
+    (form) => {
+        return form.confirmPassword === form.password
+    },
+    {
+        message: "Password must match",
+        path: ["confirmPassword"]
+    }
+)
 
-export default function SignUpPage (): JSX.Element {
+export default function SignUpPage () {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
         resolver: zodResolver(SignupSchema),
