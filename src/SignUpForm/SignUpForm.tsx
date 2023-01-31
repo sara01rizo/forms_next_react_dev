@@ -19,10 +19,10 @@ const SignupSchema = z.object({
     }
 )
 
-type SignupFormValue = z.infer<typeof SignupSchema>
+export type SignupFormValues = z.infer<typeof SignupSchema>
 
 interface SignUpFormProps {
-    onSubmitReady: (data: unknown) => void
+    onSubmitReady: (data: SignupFormValues) => void
 }
 
 export const SignUpForm = (props: SignUpFormProps ) => {
