@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
-import { SignUpForm, SignupFormValues } from "../src/SignUpForm/SignUpForm";
+import { SignUpForm, SignupFormValues, SignUpApi } from "../src/SignUpForm/SignUpForm";
 
 export default function SignUpPage () {
 
-    const signupFormRef = useRef(null)
+    const signupFormRef = useRef<SignUpApi>(null)
 
     const handleSubmit = async (data: SignupFormValues) => {
         console.log("handle submit ready data", data)
@@ -19,9 +19,9 @@ export default function SignUpPage () {
         })
         const jsonResponse = await httpResponse.json()
         if ( !jsonResponse.success ) {
-            console.log("time to set an error in the form", jsonResponse.errors)
             //how to change SignUpForm
-            signupFormRef.current.setErrors(jsonResponse.errors)
+            signupFormRef.current?.setErrors(jsonResponse.errors)
+            return
         }
         console.log(jsonResponse)
     }

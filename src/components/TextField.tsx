@@ -30,6 +30,9 @@ export const TextField = (props: TextFieldProps) => {
             <span className="label-text">{props.label}</span>
         </label>            
         <Input 
+            style={{
+                backgroundColor: "white",
+            }}
             color={"ghost"}
             id={props.id}
             type={props.type ?? "text"}
