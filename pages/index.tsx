@@ -4,9 +4,9 @@ import Link from "next/link"
 export default function HomePage () {
     return (
         <div>
-            Hello World.
+            <h1>Hi, lets go for it!! Sign up now!</h1>
             <Link href="/sign-up">
-                Sign Up
+                Click Me
             </Link>
         </div>
     )
