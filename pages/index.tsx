@@ -8,6 +8,11 @@ export default function HomePage () {
             <Link href="/sign-up">
                 Click Me
             </Link>
+            <br/ >
+            <h2>TypeScript it is working great</h2>
+            <Link href="/sign-up">
+                Sign up
+            </Link>
         </div>
     )
 }
